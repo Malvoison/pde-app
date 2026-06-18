@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: pde_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: pde_db
+      POSTGRES_USER: pde_user
+      POSTGRES_PASSWORD: pde_password
+    volumes:
+      - pde_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pde_user -d pde_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pde_db_data:
